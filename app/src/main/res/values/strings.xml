@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FileWatcher</string>
+    <string name="watching">Watching</string>
+    <string name="not_watching">Not watching</string>
 </resources>

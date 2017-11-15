@@ -1,4 +1,4 @@
-package com.sigizmund.apkwatcher
+package com.sigizmund.filewatcher
 
 import android.app.Service
 import android.content.Intent
@@ -23,6 +23,12 @@ class FileWatcherService : Service() {
 
     override fun onDestroy() {
         Log.d(TAG, "Service destroyed")
+
+        synchronized(lock) {
+            Log.d(TAG, "Stopping observer")
+            observer?.stopWatching()
+        }
+
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -81,7 +87,7 @@ class FileWatcherService : Service() {
     }
 
     private fun moveFile(src: String, dst: String): Boolean {
-        Log.d(TAG, "Moving %s -> %s".format(src, dst));
+        Log.d(TAG, "Moving %s -> %s".format(src, dst))
         FileOutputStream(dst).channel.use {
             val out = it
             FileInputStream(src).channel.use {

@@ -1,29 +1,32 @@
 package com.sigizmund.filewatcher
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.FileObserver
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Button
-import com.sigizmund.apkwatcher.FileWatcherService
+import android.widget.ToggleButton
 
 class MainActivity : AppCompatActivity() {
 
     val TAG = "MainActivity"
-    var observer : FileObserver? = null
+    var toggleButton : ToggleButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.start_watch).setOnClickListener {
-            Log.i(TAG, "OnClick")
-            val startServiceIntent = Intent(
-                    applicationContext,
-                    FileWatcherService::class.java)
-
-             applicationContext.startService(startServiceIntent)
+        toggleButton = findViewById(R.id.start_watch)
+        toggleButton?.setOnClickListener {
+            val serviceIntent = Intent(applicationContext, FileWatcherService::class.java)
+            if (toggleButton?.isChecked!!) {
+                Log.i(TAG, "Starting to watch")
+                toggleButton?.text = getString(R.string.watching)
+                applicationContext.startService(serviceIntent)
+            } else {
+                Log.i(TAG, "Stopping to watch")
+                toggleButton?.text = getString(R.string.not_watching)
+                applicationContext.stopService(serviceIntent)
+            }
         }
     }
 }

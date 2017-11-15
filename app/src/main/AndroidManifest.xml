@@ -23,7 +23,7 @@
         </activity>
 
         <service
-            android:name="com.sigizmund.apkwatcher.FileWatcherService"
+            android:name=".FileWatcherService"
             android:enabled="true"
             android:exported="true"></service>
     </application>
